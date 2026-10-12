@@ -1,0 +1,15 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Build output and dependencies
+dist/
+node_modules/
+.vercel/
+# Local machine and debug artifacts
+.DS_Store
+*.log
+coverage/
+.openai/

@@ -1,0 +1,4 @@
+/* Trial only: remove this stylesheet link to restore the previous hero layout. */
+.hero.wrap.hero-with-form{min-height:calc(100svh - var(--site-header-height,132px));padding-block:clamp(26px,4vh,65px)}
+@media(min-width:761px) and (max-height:850px){.hero-inspection{padding:25px}.hero-inspection .form-heading p{margin:10px 0 17px}.hero-inspection input{margin-bottom:12px}.hero-inspection .hero-form-assurance{padding-top:12px;margin-top:12px}.hero-with-form .hero-checks{margin-bottom:22px}.hero-with-form .personal-note{padding-top:16px}.hero-with-form h1{font-size:clamp(40px,4vw,58px)}}
+@media(max-width:760px){.hero.wrap.hero-with-form{min-height:auto;padding-block:36px}}
