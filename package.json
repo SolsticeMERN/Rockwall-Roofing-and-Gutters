@@ -6,6 +6,7 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node --env-file-if-exists=.env scripts/build.mjs",
+    "dev": "node --env-file-if-exists=.env scripts/build.mjs && python3 -m http.server 4173 --directory dist",
     "test": "node tests/form.test.mjs",
     "check": "node --check src/app.js && npm test"
   }
