@@ -1,7 +1,11 @@
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
-const source=readFileSync(new URL('../src/app.js',import.meta.url),'utf8');
+import {transformWithOxc} from 'vite';
+
+const tsSource = readFileSync(new URL('../src/app.ts', import.meta.url), 'utf8');
+const {code} = await transformWithOxc(tsSource, 'app.ts');
+const source = code.replace(/export\s+/g, '');
 async function run({accepted=true,fail=false,phone='9728327618',honey='',placement='hero'}={}) {
  const handlers={};const status={textContent:''};const button={disabled:false};let reset=false,requests=0,invalid='';
  const form={dataset:{placement},phone:{value:phone,setCustomValidity(v){invalid=v},reportValidity(){},addEventListener(){}},reportValidity(){return true},addEventListener(n,fn){handlers[n]=fn},querySelector(s){return s.includes("status")?status:button},reset(){reset=true}};

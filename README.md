@@ -7,11 +7,15 @@ Responsive Dallas roofing landing page with a floating sticky glass navbar, hero
 Requires Node.js 22 or newer. There are no runtime dependencies.
 
 ```sh
-cp .env.example .env
-npm run check
-npm run build
-python3 -m http.server 4173 --directory dist
+npm install
+npm run dev
 ```
+
+Open http://localhost:4173 with instant Hot Module Reloading (HMR).
+
+- `npm run dev`: Starts the local Vite development server.
+- `npm run build`: Type-checks with TypeScript and compiles production assets into `dist/`.
+- `npm run check`: Runs TypeScript checks and form validation test suite.
 
 Open http://localhost:4173. Edit files in `src/`, then rebuild. `dist/` is generated and ignored by Git.
 
