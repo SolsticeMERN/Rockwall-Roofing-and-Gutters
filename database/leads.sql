@@ -1,5 +1,7 @@
--- Run once in the Supabase SQL editor. Only the server service-role can access these tables.
-create table public.roofing_leads (
+-- Safe to rerun for this application's schema; existing leads are preserved.
+-- Only the server service-role can access these tables.
+begin;
+create table if not exists public.roofing_leads (
  id uuid primary key, name text not null, phone text not null, zip text not null,
  service text not null, message text not null default '', placement text not null,
  attribution jsonb not null default '{}', status text not null default 'new',
@@ -7,19 +9,19 @@ create table public.roofing_leads (
  updated_at timestamptz not null default now(), follow_up_at timestamptz default now(),
  inspection_at timestamptz, version integer not null default 1
 );
-create table public.roofing_notifications (
+create table if not exists public.roofing_notifications (
  id text primary key, lead_id uuid references public.roofing_leads(id) on delete cascade,
  kind text not null, snapshot jsonb not null, created_at timestamptz not null default now(), sent_at timestamptz
 );
-create table public.roofing_rate_limits (fingerprint text not null, created_at timestamptz not null default now());
-create index on public.roofing_rate_limits(fingerprint,created_at);
+create table if not exists public.roofing_rate_limits (fingerprint text not null, created_at timestamptz not null default now());
+create index if not exists roofing_rate_limits_fingerprint_created_idx on public.roofing_rate_limits(fingerprint,created_at);
 alter table public.roofing_leads enable row level security;
 alter table public.roofing_notifications enable row level security;
 alter table public.roofing_rate_limits enable row level security;
 revoke all on public.roofing_leads, public.roofing_notifications, public.roofing_rate_limits from anon, authenticated;
 grant select, insert, update, delete on public.roofing_leads, public.roofing_notifications, public.roofing_rate_limits to service_role;
 
-create function public.capture_roofing_lead(payload jsonb, fingerprint text) returns jsonb
+create or replace function public.capture_roofing_lead(payload jsonb, fingerprint text) returns jsonb
 language plpgsql security definer set search_path = public as $$
 declare added uuid;
 begin
@@ -34,7 +36,7 @@ begin
  return '{"duplicate":false}'::jsonb;
 end $$;
 
-create function public.update_roofing_lead(lead_id uuid, expected_version integer, changes jsonb) returns jsonb
+create or replace function public.update_roofing_lead(lead_id uuid, expected_version integer, changes jsonb) returns jsonb
 language plpgsql security definer set search_path = public as $$
 declare item roofing_leads;
 begin
@@ -48,3 +50,4 @@ begin
 end $$;
 revoke all on function public.capture_roofing_lead(jsonb,text), public.update_roofing_lead(uuid,integer,jsonb) from public, anon, authenticated;
 grant execute on function public.capture_roofing_lead(jsonb,text), public.update_roofing_lead(uuid,integer,jsonb) to service_role;
+commit;

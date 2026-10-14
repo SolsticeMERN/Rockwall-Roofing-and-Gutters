@@ -17,7 +17,7 @@ Run `npm run dev:api` in one terminal and `LEAD_CAPTURE_ENABLED=true npm run dev
 
 ## Activate on Vercel
 
-1. Create a Supabase project and run `database/leads.sql` once in its SQL editor. Keep Data API access enabled. Tables have RLS enabled with no public policies; access is server-only. The schema is not a rerunnable migration.
+1. Create a Supabase project and run `database/leads.sql` in its SQL editor. Keep Data API access enabled. Tables have RLS enabled with no public policies; access is server-only. The setup can be rerun against this application's existing schema without deleting leads. It does not migrate unrelated or incompatible table schemas.
 2. Set `SUPABASE_URL` and `SUPABASE_SECRET_KEY` in Vercel. A legacy `SUPABASE_SERVICE_ROLE_KEY` also works. Never prefix secrets with `VITE_`.
 3. Connect Resend and verify a sending domain. Set `RESEND_API_KEY`, `NOTIFICATION_FROM`, and `OWNER_NOTIFICATION_EMAIL` (the business inbox). No email has been sent by development tests.
 4. Generate distinct random secrets of at least 32 characters for `OWNER_ACCESS_KEY`, `CRON_SECRET`, and `RATE_LIMIT_SALT`. Share the owner key privately; never put it in a URL. Rotate it in Vercel to revoke access.
