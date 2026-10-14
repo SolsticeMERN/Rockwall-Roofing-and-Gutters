@@ -13,6 +13,7 @@ node_modules/
 *.log
 coverage/
 .openai/
+.data/
 # Legacy assets and local backups
 dallas-landing/
 dallas-landing-deploy.tar.gz

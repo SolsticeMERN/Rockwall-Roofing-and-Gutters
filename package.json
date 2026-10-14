@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:api": "node --env-file-if-exists=.env scripts/dev-api.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 4173",
     "check": "tsc --noEmit && npm test",
-    "test": "node tests/form.test.mjs"
+    "test": "node tests/form.test.mjs && node tests/leads.test.mjs"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

@@ -36,6 +36,7 @@ interface FormSubmitResponse {
 }
 
 window.dataLayer = window.dataLayer || [];
+const customCapture = document.querySelector<HTMLMetaElement>('meta[name="lead-capture-enabled"]')?.content === 'true';
 
 /**
  * Push an event to dataLayer safely (PII-free)
@@ -78,6 +79,7 @@ document.querySelectorAll<HTMLAnchorElement>('a[href="#inspection"]:not([data-se
 document.querySelectorAll<HTMLFormElement>('form[data-inspection-form]').forEach((form) => {
   let started = false;
   const placement = form.dataset.placement || 'unknown';
+  let requestId = crypto.randomUUID();
 
   form.addEventListener('input', () => {
     if (!started) {
@@ -129,14 +131,15 @@ document.querySelectorAll<HTMLFormElement>('form[data-inspection-form]').forEach
       }
     }
 
-    data.request_id = crypto.randomUUID();
+    data.request_id = requestId;
+    data.placement = placement;
     data.page = location.origin + location.pathname;
 
     if (submitBtn) submitBtn.disabled = true;
     if (statusEl) statusEl.textContent = 'Sending your request…';
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/rockwallroofingandgutters@gmail.com', {
+      const response = await fetch(customCapture ? '/api/leads' : 'https://formsubmit.co/ajax/rockwallroofingandgutters@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -162,6 +165,7 @@ document.querySelectorAll<HTMLFormElement>('form[data-inspection-form]').forEach
           'Your request has been submitted. We’ll contact you to discuss your roof and arrange a visit. Your inspection appointment is not yet confirmed.';
       }
       form.reset();
+      requestId = crypto.randomUUID();
       started = false;
     } catch {
       if (statusEl) {

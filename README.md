@@ -1,5 +1,7 @@
 # Rockwall Roofing & Gutters
 
+The custom lead dashboard and backend are documented in [LEAD-SYSTEM.md](LEAD-SYSTEM.md). Run `npm run dev:api` and `LEAD_CAPTURE_ENABLED=true npm run dev` for the local demonstration. Production capture stays on FormSubmit until the new system is configured and enabled.
+
 Responsive Dallas roofing landing page with a floating sticky glass navbar, hero inspection form, project gallery, customer review carousel, inspection process, FAQs, and footer.
 
 ## Run locally
